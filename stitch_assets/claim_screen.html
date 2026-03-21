@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>일당백 (Day100) - Daily Wage &amp; Expenses</title>
+<!-- BEGIN: Tailwind CSS & Config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#3b82f6', // Primary Blue for construction/professional feel
+          }
+        }
+      }
+    }
+  </script>
+<!-- END: Tailwind CSS & Config -->
+<!-- BEGIN: Custom Typography and Base Styles -->
+<style data-purpose="typography">
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+    body {
+      font-family: 'Noto+Sans+KR', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+<style data-purpose="layout-adjustments">
+    /* Hide scrollbars but keep functionality for a cleaner mobile app look */
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Active state for poom selection buttons */
+    .poom-btn.active {
+      background-color: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+  </style>
+<!-- END: Custom Typography and Base Styles -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/></head>
+<body class="bg-gray-50 text-gray-900 min-h-screen">
+<!-- BEGIN: App Header -->
+<header class="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-2">
+<button aria-label="Go back" class="p-1">
+<svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+<h1 class="text-lg font-bold text-gray-800">일당백 (Day100)</h1>
+</div>
+<button class="text-brand font-medium">저장</button>
+</header>
+<!-- END: App Header -->
+<main class="max-w-md mx-auto p-4 space-y-6 pb-24">
+<!-- BEGIN: Daily Wage Section -->
+<section class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100" data-purpose="daily-wage-form" id="daily-wage-section">
+<h2 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">근무 기록</h2>
+<div class="space-y-4">
+<!-- Date Picker -->
+<div class="flex flex-col gap-1.5">
+<label class="text-sm font-medium text-gray-700" for="work-date">근무 날짜</label>
+<input class="w-full rounded-lg border-gray-300 focus:border-brand focus:ring-brand text-gray-900" id="work-date" name="work-date" type="date" value="2023-10-27"/>
+</div>
+<!-- Site Name Input -->
+<div class="flex flex-col gap-1.5">
+<label class="text-sm font-medium text-gray-700" for="site-name">현장명</label>
+<input class="w-full rounded-lg border-gray-300 focus:border-brand focus:ring-brand" id="site-name" name="site-name" placeholder="현장 이름을 입력하세요" type="text"/>
+</div>
+<!-- Poom Selection (Radio buttons styled as blocks) -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-gray-700">공수 (Poom)</label>
+<div class="grid grid-cols-5 gap-2" id="poom-selector">
+<button class="poom-btn active py-2 border border-gray-300 rounded-lg text-sm font-medium transition-colors" data-val="1" type="button">1</button>
+<button class="poom-btn py-2 border border-gray-300 rounded-lg text-sm font-medium transition-colors" data-val="1.5" type="button">1.5</button>
+<button class="poom-btn py-2 border border-gray-300 rounded-lg text-sm font-medium transition-colors" data-val="2" type="button">2</button>
+<button class="poom-btn py-2 border border-gray-300 rounded-lg text-sm font-medium transition-colors" data-val="2.5" type="button">2.5</button>
+<button class="poom-btn py-2 border border-gray-300 rounded-lg text-sm font-medium transition-colors" data-val="3" type="button">3</button>
+</div>
+<input id="poom-value" name="poom-value" type="hidden" value="1"/>
+</div>
+</div>
+</section>
+<!-- END: Daily Wage Section -->
+<!-- BEGIN: Expense Claim Section -->
+<section class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100" data-purpose="expense-claim-form" id="expense-section">
+<h2 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">경비 청구</h2>
+<div class="space-y-4">
+<!-- Expense Type Selection -->
+<div class="flex flex-col gap-1.5">
+<label class="text-sm font-medium text-gray-700">경비 항목</label>
+<div class="grid grid-cols-2 gap-2">
+<label class="relative">
+<input checked="" class="peer hidden" name="expense-type" type="radio" value="meal"/>
+<div class="peer-checked:bg-brand peer-checked:text-white peer-checked:border-brand flex items-center justify-center py-3 border border-gray-300 rounded-lg text-sm transition-all cursor-pointer">식비</div>
+</label>
+<label class="relative">
+<input class="peer hidden" name="expense-type" type="radio" value="transport"/>
+<div class="peer-checked:bg-brand peer-checked:text-white peer-checked:border-brand flex items-center justify-center py-3 border border-gray-300 rounded-lg text-sm transition-all cursor-pointer">교통비</div>
+</label>
+<label class="relative">
+<input class="peer hidden" name="expense-type" type="radio" value="fuel"/>
+<div class="peer-checked:bg-brand peer-checked:text-white peer-checked:border-brand flex items-center justify-center py-3 border border-gray-300 rounded-lg text-sm transition-all cursor-pointer">유류비</div>
+</label>
+<label class="relative">
+<input class="peer hidden" id="type-other" name="expense-type" type="radio" value="other"/>
+<div class="peer-checked:bg-brand peer-checked:text-white peer-checked:border-brand flex items-center justify-center py-3 border border-gray-300 rounded-lg text-sm transition-all cursor-pointer">기타</div>
+</label>
+</div>
+</div>
+<!-- Other Type Input (Shown when "기타" is selected) -->
+<div class="hidden transition-all duration-300" id="other-type-input-container">
+<input class="w-full rounded-lg border-gray-300 focus:border-brand focus:ring-brand text-sm" id="other-type-desc" placeholder="경비 항목을 직접 입력하세요" type="text"/>
+</div>
+<!-- Expense Amount -->
+<div class="flex flex-col gap-1.5">
+<label class="text-sm font-medium text-gray-700" for="expense-amount">금액 (원)</label>
+<div class="relative">
+<input class="w-full rounded-lg border-gray-300 focus:border-brand focus:ring-brand text-right pr-10" id="expense-amount" name="expense-amount" placeholder="0" type="number"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">₩</span>
+</div>
+</div>
+<!-- Receipt Attachment -->
+<div class="flex flex-col gap-1.5">
+<label class="text-sm font-medium text-gray-700">영수증 첨부</label>
+<div class="border-2 border-dashed border-gray-300 rounded-xl p-6 flex flex-col items-center justify-center bg-gray-50 active:bg-gray-100 transition-colors cursor-pointer" id="receipt-upload-area">
+<svg class="h-8 w-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="text-xs text-gray-500 font-medium">사진 촬영 또는 파일 업로드</span>
+<input accept="image/*" class="hidden" id="receipt-file" type="file"/>
+</div>
+<!-- Preview container for the uploaded image (optional) -->
+<div class="hidden mt-2 relative rounded-lg overflow-hidden border border-gray-200" id="receipt-preview">
+<img alt="영수증 미리보기" class="w-full h-auto" id="preview-img" src=""/>
+<button class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 shadow-md" id="remove-receipt" type="button">
+<svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- END: Expense Claim Section -->
+</main>
+<!-- BEGIN: Navigation Bottom Bar (Typical for mobile apps) -->
+<nav class="fixed bottom-4 left-4 right-4 z-50 flex justify-around items-center h-20 max-w-lg mx-auto bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg rounded-3xl shadow-[0_12px_40px_0px_rgba(0,0,0,0.04)]">
+<button class="flex flex-col items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 rounded-2xl px-6 py-2 transition-all duration-300 active:scale-90">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-manrope text-[10px] font-semibold uppercase tracking-widest mt-1">기록하기</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">history</span>
+<span class="font-manrope text-[10px] font-semibold uppercase tracking-widest mt-1">내역</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-6 py-2 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">person</span>
+<span class="font-manrope text-[10px] font-semibold uppercase tracking-widest mt-1">내 정보</span>
+</button>
+</nav>
+<!-- END: Navigation Bottom Bar -->
+<!-- BEGIN: Interactive Logic -->
+<script data-purpose="form-interactivity">
+    // Handle Poom selection logic
+    const poomButtons = document.querySelectorAll('.poom-btn');
+    const poomHiddenInput = document.getElementById('poom-value');
+
+    poomButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        poomButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        poomHiddenInput.value = btn.getAttribute('data-val');
+      });
+    });
+
+    // Handle "Other" expense type display
+    const expenseRadios = document.querySelectorAll('input[name="expense-type"]');
+    const otherContainer = document.getElementById('other-type-input-container');
+
+    expenseRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (radio.id === 'type-other' && radio.checked) {
+          otherContainer.classList.remove('hidden');
+        } else {
+          otherContainer.classList.add('hidden');
+        }
+      });
+    });
+
+    // Simple Receipt Upload Mock-up
+    const uploadArea = document.getElementById('receipt-upload-area');
+    const fileInput = document.getElementById('receipt-file');
+    const previewArea = document.getElementById('receipt-preview');
+    const previewImg = document.getElementById('preview-img');
+    const removeBtn = document.getElementById('remove-receipt');
+
+    uploadArea.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          previewImg.src = event.target.result;
+          previewArea.classList.remove('hidden');
+          uploadArea.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    removeBtn.addEventListener('click', () => {
+      fileInput.value = '';
+      previewArea.classList.add('hidden');
+      uploadArea.classList.remove('hidden');
+    });
+  </script>
+<!-- END: Interactive Logic -->
+</body></html>

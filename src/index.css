@@ -1,0 +1,88 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+:root {
+  --primary-color: #1A2B45; /* Deep Navy */
+  --secondary-color: #3A86FF; /* Point Blue */
+  --success-color: #28a745;
+  --pending-color: #ffc107;
+  --alert-color: #dc3545;
+  --bg-color: #f8f9fa;
+  --text-color: #333;
+  --border-color: #e0e0e0;
+  --white: #ffffff;
+  --font-family: 'Pretendard', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--font-family);
+  transition: all 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+input {
+  font-family: var(--font-family);
+}
+
+/* Utilities */
+.container {
+  max-width: 480px; /* Mobile first / Portal style */
+  margin: 0 auto;
+  width: 100%;
+  padding: 20px;
+}
+
+.text-primary { color: var(--primary-color); }
+.bg-primary { background-color: var(--primary-color); color: var(--white); }
+.text-secondary { color: var(--secondary-color); }
+.bg-secondary { background-color: var(--secondary-color); color: var(--white); }
+
+/* Custom Components Base */
+.work-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  margin-bottom: 16px;
+}
+
+/* Material Symbols Global Fix */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}

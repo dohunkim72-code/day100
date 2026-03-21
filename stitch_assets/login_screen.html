@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>일당백 (Day100) - Login</title>
+<!-- Tailwind CSS v3 CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration for custom theme colors -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              300: '#93c5fd',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="typography">
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+  </style>
+<style data-purpose="layout-adjustments">
+    /* Ensure the mobile view fills the viewport height */
+    .mobile-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+<!-- BEGIN: MainContainer -->
+<main class="mobile-container max-w-md mx-auto bg-white shadow-lg overflow-hidden relative">
+<!-- BEGIN: HeaderSection -->
+<header class="pt-16 pb-8 px-6 flex flex-col items-center justify-center" data-purpose="branding-area">
+<div class="w-20 h-20 bg-primary-600 rounded-2xl flex items-center justify-center mb-4 shadow-md">
+<!-- Logo Icon Representation -->
+<svg class="h-12 w-12 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<h1 class="text-3xl font-bold text-primary-900 tracking-tight">일당백</h1>
+<p class="text-slate-500 mt-2 font-medium">노동자를 위한 든든한 파트너</p>
+</header>
+<!-- END: HeaderSection -->
+<!-- BEGIN: LoginForm -->
+<section class="px-8 pb-12 flex-grow" data-purpose="login-form-container">
+<form action="#" class="space-y-5" method="POST">
+<!-- ID Input Field -->
+<div data-purpose="input-group">
+<label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1" for="user-id">아이디</label>
+<input class="w-full px-4 py-3.5 rounded-xl border-slate-200 focus:border-primary-500 focus:ring-primary-500 transition-colors bg-slate-50" id="user-id" name="user-id" placeholder="아이디를 입력하세요" required="" type="text"/>
+</div>
+<!-- Password Input Field -->
+<div data-purpose="input-group">
+<label class="block text-sm font-semibold text-slate-700 mb-1.5 ml-1" for="password">비밀번호</label>
+<input class="w-full px-4 py-3.5 rounded-xl border-slate-200 focus:border-primary-500 focus:ring-primary-500 transition-colors bg-slate-50" id="password" name="password" placeholder="비밀번호를 입력하세요" required="" type="password"/>
+</div>
+<!-- Submit Button -->
+<div class="pt-4" data-purpose="action-buttons">
+<button class="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary-200 transition-all active:scale-[0.98]" type="submit">
+            로그인
+          </button>
+</div>
+</form>
+</section>
+<!-- END: LoginForm -->
+<!-- BEGIN: UtilityLinks -->
+<nav class="pb-12 px-8" data-purpose="account-utilities">
+<div class="flex items-center justify-center space-x-4 text-sm text-slate-500">
+<a class="hover:text-primary-600 transition-colors" href="#">회원가입</a>
+<span class="w-px h-3 bg-slate-300"></span>
+<a class="hover:text-primary-600 transition-colors" href="#">ID/PW 찾기</a>
+</div>
+</nav>
+<!-- END: UtilityLinks -->
+<!-- BEGIN: FooterDecoration -->
+<footer class="mt-auto py-6 text-center border-t border-slate-100" data-purpose="footer-info">
+<p class="text-xs text-slate-400">© 2023 일당백 (Day100). All rights reserved.</p>
+</footer>
+<!-- END: FooterDecoration -->
+</main>
+<!-- END: MainContainer -->
+</body></html>

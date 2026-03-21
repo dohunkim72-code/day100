@@ -1,0 +1,257 @@
+.history-container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding-bottom: 120px;
+}
+
+.history-main {
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-section {
+  background-color: var(--white);
+  padding: 24px 20px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.current-month {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #1f2937;
+}
+
+.calendar-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-nav {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #e5e7eb;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  padding-bottom: 12px;
+}
+
+.calendar-day {
+  aspect-ratio: 1 / 1.1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.calendar-day:hover {
+  background-color: #f8fafc;
+}
+
+.calendar-day.selected {
+  background-color: var(--secondary-color);
+  color: var(--white);
+  font-weight: 700;
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  background-color: var(--secondary-color);
+  border-radius: 50%;
+  margin-top: 4px;
+}
+
+.calendar-day.selected .dot {
+  background-color: var(--white);
+}
+
+.dot.approved {
+  background-color: #10b981;
+}
+
+.dot.pending {
+  background-color: #f59e0b;
+}
+
+.no-data-msg {
+  text-align: center;
+  padding: 40px 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.loading-screen {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.details-section {
+  padding: 24px 20px;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
+.details-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1f2937;
+}
+
+.location-tag {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--secondary-color);
+}
+
+.detail-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detail-card {
+  background-color: var(--white);
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.type-label {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  margin-bottom: 2px;
+}
+
+.item-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.status-tag {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.status-tag.success {
+  background-color: #f0fdf4;
+  color: #16a34a;
+}
+
+.status-tag.warning {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.desc {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1f2937;
+}
+
+.summary-card {
+  margin-top: 24px;
+  background-color: #1e293b;
+  border-radius: 16px;
+  padding: 20px;
+  color: var(--white);
+}
+
+.summary-card .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.summary-card .row .label {
+  opacity: 0.7;
+  font-size: 0.85rem;
+}
+
+.summary-card .row .val {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.summary-card .row.total {
+  margin-bottom: 0;
+  padding-top: 12px;
+  border-top: 1px solid #334155;
+}
+
+.summary-card .row.total .label {
+  opacity: 1;
+  font-weight: 700;
+}
+
+.val.highlight {
+  font-size: 1.3rem !important;
+  color: #f87171;
+  font-weight: 800 !important;
+}

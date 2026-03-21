@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>일당백 - 회원가입</title>
+<!-- BEGIN: Tailwind CSS & Configuration -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6', // Trustworthy blue for financial/work apps
+            accent: '#1D4ED8',
+          }
+        }
+      }
+    }
+  </script>
+<!-- END: Tailwind CSS & Configuration -->
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="mobile-layout">
+    body {
+      background-color: #F9FAFB;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .safe-area-inset-bottom {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    /* Smooth transition for input focus */
+    input:focus {
+      border-color: #3B82F6 !important;
+      ring-color: #3B82F6 !important;
+    }
+  </style>
+<!-- END: Custom Styles -->
+</head>
+<body class="font-sans antialiased text-gray-900">
+<!-- BEGIN: Navigation Bar -->
+<nav class="sticky top-0 z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center">
+<button aria-label="Go back" class="p-1">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.75 19.5L8.25 12l7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<h1 class="flex-1 text-center font-bold text-lg mr-6">회원가입</h1>
+</nav>
+<!-- END: Navigation Bar -->
+<!-- BEGIN: Main Content -->
+<main class="max-w-md mx-auto px-6 py-8 pb-24">
+<header class="mb-8">
+<h2 class="text-2xl font-bold text-gray-800">일당백 (Day100)</h2>
+<p class="text-gray-500 mt-2 text-sm">원활한 서비스 이용을 위해 필수 정보를 입력해주세요.</p>
+</header>
+<form class="space-y-6" id="signup-form">
+<!-- BEGIN: Account Information Section -->
+<section class="space-y-4" data-purpose="account-fields">
+<h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">계정 정보</h3>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="user-id">아이디</label>
+<input class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary h-12" id="user-id" name="user-id" placeholder="아이디를 입력하세요" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="password">비밀번호</label>
+<input class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary h-12" id="password" name="password" placeholder="비밀번호를 입력하세요" type="password"/>
+</div>
+</section>
+<!-- END: Account Information Section -->
+<!-- BEGIN: Identity Information Section -->
+<section class="space-y-4 pt-4 border-t border-gray-100" data-purpose="identity-fields">
+<h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">인적 사항</h3>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="resident-number">주민등록번호</label>
+<div class="flex items-center space-x-2">
+<input class="w-1/2 rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary h-12" id="resident-number-front" maxlength="6" name="resident-number-front" placeholder="앞 6자리" type="text"/>
+<span class="text-gray-400">-</span>
+<input class="w-1/2 rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary h-12" id="resident-number-back" maxlength="7" name="resident-number-back" placeholder="뒤 7자리" type="password"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="phone-number">휴대폰 번호</label>
+<input class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary h-12" id="phone-number" name="phone-number" placeholder="010-0000-0000" type="tel"/>
+</div>
+</section>
+<!-- END: Identity Information Section -->
+<!-- BEGIN: Bank Information Section -->
+<section class="space-y-4 pt-4 border-t border-gray-100" data-purpose="bank-fields">
+<h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">정산 계좌 정보</h3>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="bank-name">은행명</label>
+<select class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary h-12" id="bank-name" name="bank-name">
+<option value="">은행 선택</option>
+<option value="kb">KB국민은행</option>
+<option value="shinhan">신한은행</option>
+<option value="woori">우리은행</option>
+<option value="hana">하나은행</option>
+<option value="kakao">카카오뱅크</option>
+<option value="toss">토스뱅크</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="account-number">계좌번호</label>
+<input class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary h-12" id="account-number" name="account-number" placeholder="'-' 없이 숫자만 입력" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="account-holder">예금주</label>
+<input class="w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary h-12" id="account-holder" name="account-holder" placeholder="예금주 성명" type="text"/>
+</div>
+</section>
+<!-- END: Bank Information Section -->
+<!-- BEGIN: File Upload Section -->
+<section class="space-y-4 pt-4 border-t border-gray-100" data-purpose="upload-fields">
+<h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">증빙 서류 제출</h3>
+<div class="grid grid-cols-2 gap-4">
+<!-- Resident ID Card Upload -->
+<div data-purpose="id-upload-container">
+<p class="text-xs text-gray-500 mb-2">신분증 사본 (주민등록증/면허증)</p>
+<label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+<div class="flex flex-col items-center justify-center pt-5 pb-6">
+<svg class="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15a2.25 2.25 0 0 0 2.25-2.25V9.574c0-1.067-.75-1.994-1.802-2.169a48.329 48.329 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-xs text-gray-500 font-medium">사진 업로드</span>
+</div>
+<input accept="image/*" class="hidden" type="file"/>
+</label>
+</div>
+<!-- Bank Passbook Upload -->
+<div data-purpose="bankbook-upload-container">
+<p class="text-xs text-gray-500 mb-2">통장 사본 (본인 명의)</p>
+<label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+<div class="flex flex-col items-center justify-center pt-5 pb-6">
+<svg class="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-xs text-gray-500 font-medium">사진 업로드</span>
+</div>
+<input accept="image/*" class="hidden" type="file"/>
+</label>
+</div>
+</div>
+</section>
+<!-- END: File Upload Section -->
+</form>
+</main>
+<!-- END: Main Content -->
+<!-- BEGIN: Bottom Action Button -->
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 safe-area-inset-bottom">
+<div class="max-w-md mx-auto">
+<button class="w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-accent active:scale-95 transition-all" form="signup-form" type="submit">
+        회원가입 완료
+      </button>
+</div>
+</div>
+<!-- END: Bottom Action Button -->
+<script data-purpose="form-interactivity">
+    // Add simple feedback for file uploads
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+      input.addEventListener('change', function(e) {
+        const container = this.parentElement.querySelector('div');
+        if (this.files && this.files[0]) {
+          container.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-green-500 mb-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-xs text-green-600 font-medium">업로드 완료</span>
+          `;
+          this.parentElement.classList.replace('border-gray-300', 'border-green-500');
+          this.parentElement.classList.replace('bg-gray-50', 'bg-green-50');
+        }
+      });
+    });
+  </script>
+</body></html>
