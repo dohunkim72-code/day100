@@ -14,6 +14,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      "react-native-webview"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.dohunkim72.day100"
@@ -31,7 +34,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "175114088761"
+        "projectId": "6acd899e-2671-4535-be26-22497a29efab"
       }
     }
   }
