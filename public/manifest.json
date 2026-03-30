@@ -9,10 +9,9 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/icon-512.svg",
+      "src": "/icon.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any"
+      "type": "image/png"
     }
   ]
 }
