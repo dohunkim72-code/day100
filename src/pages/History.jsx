@@ -70,12 +70,24 @@ const History = () => {
     setSelectedDate(1)
   }
 
+  const UNIT_PRICE = 150000; // 예상 단가 (참고용)
+
   const calculateDailyTotal = () => {
-    return selectedClaims.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0)
+    return selectedClaims.reduce((acc, curr) => {
+      const workPay = (Number(curr.poom) || 0) * UNIT_PRICE;
+      const expensePay = Number(curr.amount) || 0;
+      return acc + workPay + expensePay;
+    }, 0)
   }
 
   const calculateDailyUnpaid = () => {
-    return selectedClaims.filter(c => c.status === 'pending').reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0)
+    return selectedClaims
+      .filter(c => c.status === 'pending')
+      .reduce((acc, curr) => {
+        const workPay = (Number(curr.poom) || 0) * UNIT_PRICE;
+        const expensePay = Number(curr.amount) || 0;
+        return acc + workPay + expensePay;
+      }, 0)
   }
 
   if (isLoading) return <div className="loading-screen">데이터 불러오는 중...</div>
@@ -137,27 +149,58 @@ const History = () => {
             {selectedClaims.length === 0 ? (
               <div className="no-data-msg">기록이 없습니다.</div>
             ) : (
-              selectedClaims.map(claim => (
-                <div key={claim.id} className="detail-card">
-                  <div className="card-top">
-                    <div className="info">
-                      <p className="type-label">
-                        {claim.expenseType === 'meal' ? '식비' : 
-                         claim.expenseType === 'transport' ? '교통비' : 
-                         claim.expenseType === 'fuel' ? '유류비' : `기타 (${claim.otherDetails})`}
-                      </p>
-                      <h4 className="item-name">{claim.siteName} - {claim.poom}공수</h4>
+              selectedClaims.map(claim => {
+                const workPay = (Number(claim.poom) || 0) * UNIT_PRICE;
+                const expensePay = Number(claim.amount) || 0;
+                const totalPay = workPay + expensePay;
+
+                return (
+                  <div key={claim.id} className="detail-card">
+                    <div className="card-top">
+                      <div className="info">
+                        <p className="type-label">
+                          {claim.expenseType === 'meal' ? '식비' : 
+                          claim.expenseType === 'transport' ? '교통비' : 
+                          claim.expenseType === 'fuel' ? '유류비' : `기타 (${claim.otherDetails})`}
+                        </p>
+                        <h4 className="item-name">{claim.siteName}</h4>
+                      </div>
+                      <span className={`status-tag ${claim.status} ${claim.paymentStatus === 'paid' ? 'paid' : ''}`}>
+                        {claim.status === 'rejected' ? '반려됨' : 
+                         claim.status === 'approved' ? (claim.paymentStatus === 'paid' ? '입금 완료' : '승인 (미입금)') : 
+                         '대기 중'}
+                      </span>
                     </div>
-                    <span className={`status-tag ${claim.status}`}>
-                      {claim.status === 'approved' ? '지급완료' : claim.status === 'rejected' ? '반려됨' : '대기중'}
-                    </span>
+                    
+                    <div className="price-breakdown">
+                      {claim.poom > 0 && (
+                        <div className="price-row">
+                          <span className="label">일당 ({claim.poom}공수)</span>
+                          <span className="val">{workPay.toLocaleString()}원</span>
+                        </div>
+                      )}
+                      {expensePay > 0 && (
+                        <div className="price-row">
+                          <span className="label">경비 ({
+                            claim.expenseType === 'meal' ? '식비' : 
+                            claim.expenseType === 'transport' ? '교통' : 
+                            claim.expenseType === 'fuel' ? '유류' : '기타'
+                          })</span>
+                          <span className="val">{expensePay.toLocaleString()}원</span>
+                        </div>
+                      )}
+                      <div className="price-row total-row">
+                        <span className="label">합계</span>
+                        <span className="val">{totalPay.toLocaleString()}원</span>
+                      </div>
+                    </div>
+                    
+                    <div className="card-bottom">
+                      <span className="desc">등록일: {new Date(claim.createdAt).toLocaleDateString()}</span>
+                    </div>
                   </div>
-                  <div className="card-bottom">
-                    <span className="desc">등록일: {new Date(claim.createdAt).toLocaleDateString()}</span>
-                    <span className="price">{(Number(claim.amount) || 0).toLocaleString()}원</span>
-                  </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
 

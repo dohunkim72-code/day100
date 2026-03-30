@@ -8,6 +8,8 @@ import History from './pages/History'
 
 import Profile from './pages/Profile'
 import Admin from './pages/Admin'
+import AdminLogin from './pages/AdminLogin'
+import Privacy from './pages/Privacy'
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
         <Route path="/claim" element={<Claim />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/privacy" element={<Privacy />} />
       </Routes>
     </Router>
   )

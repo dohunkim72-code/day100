@@ -25,8 +25,9 @@ const Profile = () => {
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [recaptchaVerifier, setRecaptchaVerifier] = useState(null);
 
-  const [bankForm, setBankForm] = useState({ bankName: '', accountNumber: '', accountHolder: '' });
+  const [bankForm, setBankForm] = useState({ bank: '', accountNumber: '', accountHolder: '' });
   const [bankbookFile, setBankbookFile] = useState(null);
+  const [idCardFile, setIdCardFile] = useState(null); // 신분증 파일 상태 추가
 
   // 1. 사용자 인증 및 데이터 로드
   useEffect(() => {
@@ -38,8 +39,16 @@ const Profile = () => {
             const userData = userDoc.data();
             setUser({ uid: currentUser.uid, ...userData });
             setPhoneNumber(userData.phone || '');
+            let rawBank = userData.bank || userData.bankName || '';
+            // 데이터 정규화: '국민은행' -> 'KB국민은행'
+            if (rawBank === '국민은행') rawBank = 'KB국민은행';
+            if (rawBank === '기업은행') rawBank = 'IBK기업은행';
+            if (rawBank === '산업은행') rawBank = 'KDB산업은행';
+            if (rawBank === '농협은행' || rawBank === '농협') rawBank = 'NH농협은행';
+            if (rawBank === '수협은행' || rawBank === '수협') rawBank = 'Sh수협은행';
+
             setBankForm({
-              bankName: userData.bankName || '신한은행',
+              bank: rawBank,
               accountNumber: userData.accountNumber || '',
               accountHolder: userData.accountHolder || ''
             });
@@ -196,9 +205,34 @@ const Profile = () => {
       }
       await updateDoc(doc(db, "users", user.uid), {
         ...bankForm,
-        bankbookUrl
+        bankbookUrl,
+        status: 'pending', // 수정 시 재승인 대기 상태로 변경
+        rejectReason: ''   // 반려 사유 초기화
       });
-      alert('정보가 수정되었습니다.');
+      alert('정산 정보가 수정되었으며, 재승인 요청이 접수되었습니다.');
+    } catch (error) {
+      alert('실패: ' + error.message);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleIdCardUpdate = async () => {
+    if (!idCardFile) return alert('수정할 신분증 사진을 선택해주세요.');
+    
+    setIsUpdating(true);
+    try {
+      const storageRef = ref(storage, `documents/${user.uid}/idCard_${Date.now()}`);
+      await uploadBytes(storageRef, idCardFile);
+      const idCardUrl = await getDownloadURL(storageRef);
+      
+      await updateDoc(doc(db, "users", user.uid), {
+        idCardUrl,
+        status: 'pending',
+        rejectReason: ''
+      });
+      alert('신분증 정보가 수정되었으며, 재승인 요청이 접수되었습니다.');
+      setIdCardFile(null);
     } catch (error) {
       alert('실패: ' + error.message);
     } finally {
@@ -223,9 +257,31 @@ const Profile = () => {
       <div id="recaptcha-profile-container"></div>
 
       <main className="profile-main">
+        {/* 상태 알림 섹션 추가 */}
+        {user && user.status !== 'approved' && (
+          <section className={`status-notice-banner ${user.status}`}>
+            <div className="notice-icon">
+              <span className="material-symbols-outlined">
+                {user.status === 'rejected' ? 'error' : 'pending'}
+              </span>
+            </div>
+            <div className="notice-content">
+              <h4 className="notice-title">
+                {user.status === 'rejected' ? '서류가 반려되었습니다' : '서류 검토 중입니다'}
+              </h4>
+              <p className="notice-text">
+                {user.status === 'rejected' 
+                  ? `사유: ${user.rejectReason || '정보 불충분'}. 아래 탭에서 정보를 수정해 주세요.`
+                  : '관리자가 서류를 확인 중입니다. 승인 후 서비스 이용이 가능합니다.'}
+              </p>
+            </div>
+          </section>
+        )}
+
         <section className="profile-tab-menu">
           <button className={`tab-item ${activeTab === 'password' ? 'active' : ''}`} onClick={() => setActiveTab('password')}>비밀번호</button>
           <button className={`tab-item ${activeTab === 'phone' ? 'active' : ''}`} onClick={() => setActiveTab('phone')}>휴대폰</button>
+          <button className={`tab-item ${activeTab === 'idcard' ? 'active' : ''}`} onClick={() => setActiveTab('idcard')}>신분증</button>
           <button className={`tab-item ${activeTab === 'bank' ? 'active' : ''}`} onClick={() => setActiveTab('bank')}>정산계좌</button>
         </section>
 
@@ -273,15 +329,70 @@ const Profile = () => {
             </section>
           )}
 
+          {activeTab === 'idcard' && (
+            <section className="form-section fade-in">
+              <div className="id-verification-header">
+                <h3 className="sub-section-title">정보 확인</h3>
+                <div className="user-info-readonly">
+                  <div className="info-row">
+                    <label>성명</label>
+                    <span className="info-value">{user?.userName || '-'}</span>
+                  </div>
+                  <div className="info-row">
+                    <label>주민등록번호</label>
+                    <div className="rrn-display">
+                      <span className="info-value">{user?.residentFront || '******'}</span>
+                      <span className="dash">-</span>
+                      <span className="info-value">{user?.residentBack ? '●●●●●●●' : '*******'}</span>
+                    </div>
+                  </div>
+                </div>
+                <p className="tab-desc">위 정보가 기재된 신분증 사진을 업로드해 주세요.</p>
+              </div>
+
+              <div className="upload-area-wrap">
+                <label className={`upload-box ${idCardFile ? 'has-file' : ''}`}>
+                  <div className="upload-text">{idCardFile ? idCardFile.name : '새 신분증 사진 선택'}</div>
+                  <input type="file" className="file-input" onChange={e => setIdCardFile(e.target.files[0])} />
+                </label>
+              </div>
+              <div className="section-action">
+                <button className="btn-edit-done" disabled={isUpdating} onClick={handleIdCardUpdate}>신분증 수정 완료</button>
+              </div>
+            </section>
+          )}
+
           {activeTab === 'bank' && (
             <section className="form-section fade-in">
               <div className="account-card">
                 <div className="field-unit">
-                  <select className="styled-select" value={bankForm.bankName} onChange={e => setBankForm({...bankForm, bankName: e.target.value})}>
-                    <option>신한은행</option>
-                    <option>국민은행</option>
-                    <option>카카오뱅크</option>
-                    <option>토스뱅크</option>
+                  <select className="styled-select" value={bankForm.bank} onChange={e => setBankForm({...bankForm, bank: e.target.value})}>
+                    <option value="">은행 선택</option>
+                    <option value="우체국">우체국</option>
+                    <option value="IBK기업은행">IBK기업은행</option>
+                    <option value="KDB산업은행">KDB산업은행</option>
+                    <option value="NH농협은행">NH농협은행</option>
+                    <option value="Sh수협은행">Sh수협은행</option>
+                    <option value="KB국민은행">KB국민은행</option>
+                    <option value="하나은행">하나은행</option>
+                    <option value="신한은행">신한은행</option>
+                    <option value="우리은행">우리은행</option>
+                    <option value="SC제일은행">SC제일은행</option>
+                    <option value="iM뱅크">iM뱅크</option>
+                    <option value="케이뱅크">케이뱅크</option>
+                    <option value="카카오뱅크">카카오뱅크</option>
+                    <option value="토스뱅크">토스뱅크</option>
+                    <option value="전북은행">전북은행</option>
+                    <option value="광주은행">광주은행</option>
+                    <option value="BNK부산은행">BNK부산은행</option>
+                    <option value="BNK경남은행">BNK경남은행</option>
+                    <option value="제주은행">제주은행</option>
+                    <option value="jBANK">jBANK</option>
+                    <option value="신협">신협</option>
+                    <option value="새마을금고">새마을금고</option>
+                    <option value="산림조합">산림조합</option>
+                    <option value="SBI저축은행">SBI저축은행</option>
+                    <option value="저축은행">저축은행</option>
                   </select>
                 </div>
                 <div className="field-unit">

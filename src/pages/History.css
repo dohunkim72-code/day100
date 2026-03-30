@@ -185,14 +185,72 @@
   font-weight: 800;
 }
 
-.status-tag.success {
+/* 상태별 태그 색상 */
+.status-tag.pending {
+  background-color: #fffbeb;
+  color: #d97706;
+}
+
+.status-tag.approved {
+  background-color: #f0f9ff;
+  color: #0369a1;
+}
+
+.status-tag.approved.paid {
   background-color: #f0fdf4;
   color: #16a34a;
 }
 
-.status-tag.warning {
+.status-tag.rejected {
   background-color: #fef2f2;
   color: #dc2626;
+}
+
+
+/* 금액 상세 내역 스타일 */
+.price-breakdown {
+  margin: 14px 0;
+  padding: 14px;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.price-row .label {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.price-row .val {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.total-row {
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.total-row .label {
+  color: var(--secondary-color);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.total-row .val {
+  color: var(--secondary-color);
+  font-weight: 800;
+  font-size: 1rem;
 }
 
 .card-bottom {
@@ -206,12 +264,6 @@
 .desc {
   font-size: 0.85rem;
   color: #64748b;
-}
-
-.price {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: #1f2937;
 }
 
 .summary-card {
