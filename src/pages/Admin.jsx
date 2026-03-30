@@ -183,21 +183,28 @@ const Admin = () => {
       
       // 비밀번호가 입력된 경우 추가 처리
       if (editPw.trim() !== '') {
-        updateData.pwForAdmin = editPw; // 관리자용 기록
-        
-        // 수정 대상이 "본인"일 경우 실제 Auth 비밀번호도 변경 시도
-        if (editAdmin.id === auth.currentUser?.uid) {
-          try {
+        try {
+          if (editAdmin.id === auth.currentUser?.uid) {
+            // 1. 본인 비밀번호 수정 시 실제 Auth 정보 변경
             await authPkg.updatePassword(auth.currentUser, editPw);
-            console.log("Auth password sync success");
-          } catch (err) {
-            console.warn("Auth password sync limited (recently logged in required)", err);
-            // 가끔 보안상의 이유로 재로그인이 필요할 수 있음을 알림
-            if (err.code === 'auth/requires-recent-login') {
-                alert('보안을 위해 비밀번호 변경 전 재로그인이 필요합니다. 로그아웃 후 다시 로그인해 주세요.');
-                return;
-            }
+            console.log("본인 Auth 비밀번호 동기화 성공");
+            updateData.pwForAdmin = editPw; // Auth 성공 시에만 DB 업데이트 데이터에 포함
+          } else {
+            // 2. 타인(하위 관리자) 비밀번호 수정 시
+            // 보안상 클라이언트 앱에서 타인의 이메일/비번 Auth 정보를 직접 수정하는 것은 차단됨
+            alert('보안 정책상 타인의 로그인 비밀번호를 직접 수정할 수 없습니다.\n해당 계정을 삭제(준비 중) 후 다시 등록하시거나, 본인이 직접 로그인하여 수정해야 합니다.');
+            setIsUpdating(false);
+            return; // 동기화 보장을 위해 Firestore 업데이트 중단
           }
+        } catch (err) {
+          console.error("Auth sync error:", err);
+          if (err.code === 'auth/requires-recent-login') {
+            alert('로그인한 지 오래되어 보안상 비밀번호 변경이 차단되었습니다.\n로그아웃 후 다시 로그인하여 즉시 수정해 주세요.');
+          } else {
+            alert('비밀번호 변경 중 오류가 발생했습니다: ' + err.message);
+          }
+          setIsUpdating(false);
+          return; // Auth 변경 실패 시 DB만 업데이트하지 않음 (동기화 깨짐 방지)
         }
       }
       
@@ -218,6 +225,21 @@ const Admin = () => {
     setEditPhone(adm.phone || '');
     setEditPw('');
     setShowRegForm(false);
+  };
+
+  const handleDeleteAdmin = async (admId, admUid) => {
+    if (admUid === auth.currentUser?.uid) {
+      alert("본인 계정은 삭제할 수 없습니다.");
+      return;
+    }
+    if (!window.confirm(`${admId} 관리자를 삭제하시겠습니까?`)) return;
+    
+    try {
+      await deleteDoc(doc(db, "admins", admUid));
+      alert("관리자 정보가 삭제되었습니다.\n(참고: 중복 방지를 위해 동일 아이디로 재등록 전까지는 이전 계정의 로그인 정보가 유지될 수 있습니다.)");
+    } catch (err) {
+      alert("삭제 실패: " + err.message);
+    }
   };
 
   const normalizeBankName = (bank) => {
