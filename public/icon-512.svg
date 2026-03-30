@@ -1,0 +1,7 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="100" fill="#FF8A00"/>
+  <rect x="60" y="60" width="392" height="392" rx="80" fill="white" fill-opacity="0.2"/>
+  <path d="M256 120L310 210H202L256 120Z" fill="white"/>
+  <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-weight="900" font-size="140">100</text>
+  <text x="50%" y="82%" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-weight="700" font-size="40">일당백</text>
+</svg>

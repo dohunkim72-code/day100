@@ -1,0 +1,18 @@
+{
+  "name": "일당백 (Day100)",
+  "short_name": "일당백",
+  "description": "건설 일당 및 경비 청구 관리 시스템",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#FF8A00",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
